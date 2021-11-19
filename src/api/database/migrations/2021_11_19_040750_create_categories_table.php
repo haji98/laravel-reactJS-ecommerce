@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaymentDetailsTable extends Migration
+class CreateCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreatePaymentDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payment_details', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('order_id');
-            $table->integer('amount')->nullable();
-            $table->string('provider')->nullable();
-            $table->string('status')->nullable();
+            $table->string('name')->nullable();
+            $table->string('desc')->nullable();
+            $table->string('img')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreatePaymentDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_details');
+        Schema::dropIfExists('categories');
     }
 }
