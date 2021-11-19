@@ -19,15 +19,12 @@ class CreateProductsTable extends Migration
             $table->foreign('category_id')->references('id')->on('categories');
             $table->string('name')->nullable();
             $table->text('desc')->nullable();
-            $table->integer('inventory_id')->unsigned();
-            $table->foreign('inventory_id')->references('id')->on('inventories');
-            $table->decimal('price', 5, 2)->nullable();
-            $table->integer('discount_id')->unsigned();
-            $table->foreign('discount_id')->references('id')->on('discounts');
-            $table->integer('rate_id')->unsigned();
-            $table->foreign('rate_id')->references('id')->on('rates');
-            $table->integer('tag_id')->unsigned();
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->integer('quantity')->nullable();
+            $table->float('price', 8, 2)->nullable();
+            $table->integer('discount_percent')->nullable();
+            $table->boolean('active_discount');
+            $table->integer('rate')->nullable();
+            $table->string('imgs')->nullable();
             $table->timestamps();
         });
     }

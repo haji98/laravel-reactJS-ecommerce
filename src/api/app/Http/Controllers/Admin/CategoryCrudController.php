@@ -39,11 +39,7 @@ class CategoryCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('name');
-        CRUD::column('desc');
-        CRUD::column('img');
-        CRUD::column('created_at');
-        CRUD::column('updated_at');
+        $this->setView();
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -64,7 +60,13 @@ class CategoryCrudController extends CrudController
 
         CRUD::field('name');
         CRUD::field('desc');
-        CRUD::field('img');
+        $this->crud->addField([
+            'name' => 'img',
+            'label' => 'Image',
+            'type' => 'image',
+            'upload' => true,
+            'prefix'    => 'storage'
+        ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
@@ -82,5 +84,23 @@ class CategoryCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+        $this->setView();
+    }
+
+    function setView()
+    {
+        CRUD::column('name');
+        CRUD::column('desc');
+        CRUD::addColumn([
+            'name' => 'img',
+            'label' => 'Image',
+            'type' => 'image',
+            'prefix'    => 'storage'
+        ]);
     }
 }

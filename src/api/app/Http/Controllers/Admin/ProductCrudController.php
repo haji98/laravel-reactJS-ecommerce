@@ -39,16 +39,7 @@ class ProductCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('category_id');
-        CRUD::column('tag_id');
-        CRUD::column('name');
-        CRUD::column('desc');
-        CRUD::column('inventory_id');
-        CRUD::column('discount_id');
-        CRUD::column('price');
-        CRUD::column('rate_id');
-        CRUD::column('created_at');
-        CRUD::column('updated_at');
+        $this->setView();
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -67,15 +58,29 @@ class ProductCrudController extends CrudController
     {
         CRUD::setValidation(ProductRequest::class);
 
-        CRUD::field('category_id');
-        CRUD::field('tag_id');
+        CRUD::addField([   // Category
+            'type' => 'relationship',
+            'name' => 'category_id',
+            'label' => 'Category',
+            'attribute' => 'name',
+            'entity' => 'categories',
+            'model' => 'App\Models\Category',
+            'placeholder' => 'Select a category',
+        ]);
         CRUD::field('name');
         CRUD::field('desc');
-        CRUD::field('inventory_id');
-        CRUD::field('discount_id');
+        CRUD::field('quantity');
         CRUD::field('price');
-        CRUD::field('rate_id');
-
+        CRUD::field('discount_percent');
+        CRUD::field('active_discount');
+        CRUD::field('rate');
+        CRUD::addField([
+            'name' => 'imgs',
+            'label' => 'Upload multiple',
+            'type' => 'upload_multiple',
+            'upload' => true,
+            'prefix'    => 'storage',
+        ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
@@ -92,5 +97,29 @@ class ProductCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+    protected function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+        $this->setView();
+    }
+    function setView()
+    {
+        CRUD::addColumn([
+            'label'     => 'Category',
+            'type'      => 'select',
+            'name'      => 'category_id',
+            'entity'    => 'categories',
+            'attribute' => 'name',
+            'model'     => 'App\Models\Category',
+        ]);
+        CRUD::column('name');
+        CRUD::column('desc');
+        CRUD::column('quantity');
+        CRUD::column('price');
+        CRUD::column('discount_percent');
+        CRUD::column('rate');
+        CRUD::column('created_at');
+        CRUD::column('updated_at');
     }
 }
